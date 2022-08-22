@@ -7,9 +7,7 @@ import useSWR from "swr";
 const styles = { ...commonStyles };
 
 export const getStaticProps = async (ctx) => {
-  const { data, error } = await getDatabase();
-
-  error && console.error(error);
+  const { data } = await getDatabase();
 
   return {
     props: {
@@ -20,7 +18,8 @@ export const getStaticProps = async (ctx) => {
 };
 
 export default function Movies(props) {
-  const { data, error } = useSWR("/api/fetch/database", { fallbackData: props.data });
+  // const { data, error } = useSWR("/api/database/db.json", { fallbackData: props.data });
+  const data = props.data;
   // console.log(data);
   return (
     <>

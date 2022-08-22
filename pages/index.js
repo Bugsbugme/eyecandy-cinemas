@@ -8,9 +8,7 @@ import styles from "../styles/Common.module.css";
 import useSWR from "swr";
 
 export const getStaticProps = async (ctx) => {
-  const { data, error } = await getDatabase();
-
-  error && console.error(error);
+  const { data } = await getDatabase();
 
   return {
     props: {
@@ -21,19 +19,20 @@ export const getStaticProps = async (ctx) => {
 };
 
 export default function Home(props) {
-  const { data, error } = useSWR("/api/fetch/database", { fallbackData: props.data });
+  // const { data, error } = useSWR("/api/database/db.json", { fallbackData: props.data });
+  const data = props.data;
 
-  if (error) {
-    console.error(error);
-    return (
-      <main id="main_content">
-        <p>{error.status}</p>
-        <p>{error.name}</p>
-        <p>{error.message}</p>
-        <p>{}</p>
-      </main>
-    );
-  }
+  // if (props.error) {
+  //   console.error(props.error);
+  //   return (
+  //     <main id="main_content">
+  //       <p>{props.error.status}</p>
+  //       <p>{props.error.name}</p>
+  //       <p>{props.error.message}</p>
+  //       <p>{}</p>
+  //     </main>
+  //   );
+  // }
 
   if (!data) {
     return (

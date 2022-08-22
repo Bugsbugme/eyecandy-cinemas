@@ -50,8 +50,12 @@
 }
 
 .video button i {
-  font-size: 30px;
-  letter-spacing: normal;
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
 }
 
 .hidden {

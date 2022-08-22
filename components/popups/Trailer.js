@@ -14,7 +14,7 @@ export default function Trailer(props) {
               type="button"
               onClick={() => props.closeModal()}
               title="Close">
-              <i className={[`bx bx-x ${styles.bg_gradient_linear_45}`].join(" ")} />
+              <i className={[`bi bi-x ${styles.bg_gradient_linear_45}`].join(" ")} />
             </button>
             <iframe
               src={`https://www.youtube.com/embed/${props.youtubeID}?rel=0&amp;modestbranding=1`}

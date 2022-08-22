@@ -68,6 +68,12 @@
   border-radius: 0.2rem;
 }
 
+@-moz-document url-prefix() {
+  .certification {
+    padding-top: 0.1rem;
+  }
+}
+
 .links {
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
@@ -191,18 +197,19 @@
 
 .footer ul i {
   display: flex;
-  width: 2rem;
-  height: 2rem;
+  width: fit-content;
+  height: fit-content;
+  padding: 0.3rem;
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
 }
 
-/* @-moz-document url-prefix() {
-  .footer ul .icon {
-    padding-bottom: 0.3rem;
+@-moz-document url-prefix() {
+  .footer ul i {
+    padding-right: 0.23rem;
   }
-} */
+}
 
 /* For Tablets */
 /* @media only screen and (max-width: 800px) {

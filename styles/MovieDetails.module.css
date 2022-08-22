@@ -1,0 +1,265 @@
+.backdrop_container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.backdrop_container::after {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  content: "";
+  /* background: linear-gradient(90deg, var(--color-bg), transparent); */
+}
+
+.backdrop {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.details_container {
+  background: rgba(20, 20, 20, 0.8);
+  align-items: center;
+}
+
+.poster {
+  display: block;
+  width: auto;
+  height: 100%;
+  max-height: 463px;
+  margin-right: 2rem;
+  background: rgba(20, 20, 20, 1);
+  border-width: 1px;
+}
+
+.details {
+  width: fit-content;
+  height: 100%;
+  justify-content: center;
+}
+
+.details > header {
+  margin-bottom: 0.25rem;
+  align-items: center;
+  text-shadow: 0px 0px 5px rgba(20, 20, 20, 1);
+}
+
+.release_year {
+  font-size: 1em;
+  font-weight: 300;
+  letter-spacing: 0.1rem;
+}
+
+.certification {
+  width: fit-content;
+  height: fit-content;
+  padding: 0.2rem;
+  margin-right: 0.5rem;
+  font-family: "Roboto Slab", serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: hsl(0, 0%, 80%);
+  text-transform: uppercase;
+  letter-spacing: normal;
+  border: 0.2rem solid hsl(0, 0%, 50%);
+  border-radius: 0.2rem;
+}
+
+.links {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.trailer,
+.booking {
+  margin-right: 0.5rem;
+}
+
+.links a {
+  position: relative;
+  padding: 0.3rem;
+  padding-bottom: 0.2rem;
+  font-size: 1.2em;
+  font-weight: 700;
+  letter-spacing: 0.1ch;
+  word-spacing: -0.5ch;
+  align-items: center;
+  border-width: 1px;
+}
+
+.links button {
+  position: relative;
+
+  align-items: center;
+  font-size: 1.2em;
+  background: rgba(20, 20, 20, 0.5);
+  border-width: 1px;
+}
+
+.links button p {
+  padding: 0.3rem;
+  padding-bottom: 0.2rem;
+  letter-spacing: 0.1ch;
+  word-spacing: -0.5ch;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.links i {
+  display: none;
+  /* position: absolute; */
+  /* left: 0; */
+  /* transform: translateX(-50%); */
+  /* z-index: -1; */
+  margin-right: 0.3rem;
+  font-size: 2.5rem;
+  color: transparent;
+  /* opacity: 50%; */
+}
+
+.sub_heading {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+  text-shadow: 0px 0px 5px rgba(20, 20, 20, 1);
+}
+
+.runtime,
+.genres,
+.director,
+.director_name,
+.actors,
+.actor_names {
+  font-size: 1em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.director_name,
+.actor_names {
+  font-weight: 400;
+  font-style: italic;
+}
+
+.runtime {
+  margin-bottom: 0.2rem;
+}
+
+.runtime > span {
+  font-weight: 400;
+  text-transform: lowercase;
+}
+
+.genres {
+  margin-bottom: 0.2rem;
+}
+
+.tagline {
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+  text-shadow: 0px 0px 5px rgba(20, 20, 20, 1);
+}
+
+.overview {
+  font-size: 1rem;
+  word-spacing: -0.5ch;
+  text-shadow: 0px 0px 5px rgba(20, 20, 20, 1);
+}
+
+.overview_link {
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  word-spacing: -0.5ch;
+  text-decoration: underline;
+}
+
+.footer ul {
+  margin-top: 0.5rem;
+  list-style: none;
+}
+
+.footer ul li {
+  display: inline-block;
+  margin-right: 0.5rem;
+  background: rgba(20, 20, 20, 0.5);
+  border-width: 1px;
+}
+
+.footer ul i {
+  display: flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+/* @-moz-document url-prefix() {
+  .footer ul .icon {
+    padding-bottom: 0.3rem;
+  }
+} */
+
+/* For Tablets */
+/* @media only screen and (max-width: 800px) {
+  .movie_panel {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .movie_poster-card {
+    max-width: 100%;
+    min-width: 300px;
+  }
+
+  .movie_panel > .divider_x {
+    display: inherit;
+  }
+
+  .movie_panel > .divider_y {
+    display: none;
+  }
+} */
+
+/* For Mobile Phones */
+/* @media only screen and (max-width: 425px) {
+  .movie_links a {
+    font-size: 1.05em;
+  }
+
+  .movie_header h2,
+  .movie_share_links i {
+    font-size: 2rem;
+  }
+
+  .movie_nzcl {
+    width: 40px;
+  }
+
+  .movie_header p,
+  .movie_director,
+  .movie_director span,
+  .movie_synopsis {
+    font-size: 1.4rem;
+  }
+
+  .movie_imdb {
+    font-size: 1.2rem;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .movie_links a {
+    font-size: 0.94em;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .movie_links a {
+    font-size: 0.77em;
+  }
+} */

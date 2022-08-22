@@ -1,0 +1,63 @@
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.container {
+  display: block;
+  opacity: 100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(20, 20, 20, 0.8);
+  pointer-events: auto;
+  transition: opacity 300ms ease-in-out;
+}
+
+.video {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  aspect-ratio: 16 / 9;
+  border-width: 1px;
+  transform: translate(-50%, -50%);
+}
+
+.video iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: rgba(20, 20, 20, 1);
+}
+
+.video:hover button {
+  opacity: 100%;
+}
+
+.video button {
+  opacity: 0%;
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  background: rgba(20, 20, 20, 0.8);
+  border-width: 1px;
+  transition: opacity 300ms ease-in-out;
+}
+
+.video button i {
+  font-size: 30px;
+  letter-spacing: normal;
+}
+
+.hidden {
+  opacity: 0%;
+}
+
+.closed {
+  display: none;
+}

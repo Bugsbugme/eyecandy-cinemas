@@ -1,0 +1,128 @@
+.content {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  padding: 2rem;
+}
+
+.flex_container {
+  display: flex;
+}
+
+.flex_column {
+  flex-direction: column;
+}
+
+.fixed {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
+
+.box_shadow {
+  box-shadow: 0px 0px 10px 5px rgba(20, 20, 20, 0.5);
+}
+
+.dividerX_before,
+.dividerX_after,
+.dividerY_before,
+.dividerY_after {
+  position: relative;
+}
+
+.dividerX_before::before,
+.dividerX_after::after {
+  background: linear-gradient(0deg, rgba(2, 0, 36, 0) 0%, rgb(195, 105, 255) 50%, rgba(0, 212, 255, 0) 100%);
+}
+
+.dividerY_before::before,
+.dividerY_after::after {
+  background: linear-gradient(90deg, rgba(2, 0, 36, 0) 0%, rgb(195, 105, 255) 50%, rgba(0, 212, 255, 0) 100%);
+}
+
+.dividerX_before::before,
+.dividerX_after::after,
+.dividerY_before::before,
+.dividerY_after::after {
+  position: absolute;
+  content: "";
+}
+
+.dividerX_before::before {
+  top: 0;
+  left: -1rem;
+  width: 1px;
+  height: 100%;
+}
+
+.dividerX_after::after {
+  top: 0;
+  right: -1rem;
+  width: 1px;
+  height: 100%;
+}
+
+.dividerY_before::before {
+  left: 0;
+  top: -1rem;
+  width: 100%;
+  height: 1px;
+}
+
+.dividerY_after::after {
+  left: 0;
+  bottom: -1rem;
+  width: 100%;
+  height: 1px;
+}
+
+.dividerX_before_onhover::before,
+.dividerX_after_onhover::after,
+.dividerY_before_onhover::before,
+.dividerY_after_onhover::after {
+  transform: scaleX(0);
+  transition: all 300ms ease-in-out;
+}
+
+.dividerX_before_onhover:hover::before,
+.dividerX_after_onhover:hover::after,
+.dividerY_before_onhover:hover::before,
+.dividerY_after_onhover:hover:after {
+  transform: scaleX(1);
+}
+
+.bg_gradient_linear_45 {
+  background: var(--gradient-linear45);
+}
+
+.bg_gradient_linear_0 {
+  background: linear-gradient(0deg, rgba(2, 0, 36, 0) 0%, rgba(195, 105, 255, 1) 50%, rgba(0, 212, 255, 0) 100%);
+}
+
+.bg_gradient_linear_90 {
+  background: linear-gradient(90deg, rgba(2, 0, 36, 0) 0%, rgba(195, 105, 255, 1) 50%, rgba(0, 212, 255, 0) 100%);
+}
+
+.border_gradient_linear_45 {
+  border-style: solid;
+  border-color: var(--color-primary);
+  border-image: var(--gradient-linear45) 1;
+}
+
+.border_gradient_linear_345 {
+  border-style: solid;
+  border-color: var(--color-primary);
+  border-image: var(--gradient-linear345) 1;
+}
+
+.onhover_gradient,
+.onhover_gradient .bg_gradient_linear_45 {
+  background-clip: text;
+  transition: color 300ms ease-in-out;
+}
+
+.onhover_gradient:hover,
+.onhover_gradient:hover .bg_gradient_linear_45 {
+  color: transparent;
+}

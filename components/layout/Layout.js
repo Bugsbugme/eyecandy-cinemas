@@ -21,7 +21,6 @@ export default function Layout({ children, ...pageProps }) {
         <meta name="og:type" content="entertainment, movies" key="type" />
         <meta name="og:country-name" content="NZ" key="country-name" />
         <meta name="language" content="ENG" />
-        {/* <link rel="preload" href="/api/fetch/database" as="fetch" crossOrigin="anonymous" /> */}
       </Head>
       <Nav navProps={pageProps.navProps} />
       {children}

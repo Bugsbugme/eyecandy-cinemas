@@ -1,4 +1,4 @@
-import fetchDetails from "../../../lib/movie/fetch";
+import fetchDetails from "../../../lib/movie_details/fetch";
 
 export default async function handler(req, res) {
   const movieID = req.query.movie_id;

@@ -1,9 +1,8 @@
-import getDatabase from "../../../lib/database/get";
+import fetchDatabase from "../../../lib/database/fetch";
 
 export default async function handler(req, res) {
-  const { data, error } = await getDatabase();
+  const { data, error } = await fetchDatabase();
 
   error && res.status(error.Status).json(error);
-
   data && res.status(200).json(data);
 }

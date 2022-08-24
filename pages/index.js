@@ -3,36 +3,34 @@ import Head from "next/head";
 import Layout from "../components/layout/Layout";
 import Loading from "../components/Loading";
 import NowShowing from "../components/homepage/NowShowing";
-import getDatabase from "../lib/database/get";
+import fetchDatabase from "../lib/database/fetch";
 import styles from "../styles/Common.module.css";
 import useSWR from "swr";
 
-export const getStaticProps = async (ctx) => {
-  const { data } = await getDatabase();
+export const getStaticProps = async () => {
+  const { data } = await fetchDatabase();
 
   return {
     props: {
       data,
     },
-    revalidate: 86400,
+    revalidate: 3600,
   };
 };
 
 export default function Home(props) {
-  // const { data, error } = useSWR("/api/database/db.json", { fallbackData: props.data });
-  const data = props.data;
+  const { data, error } = useSWR("/api/fetch/database", { fallbackData: props.data });
 
-  // if (props.error) {
-  //   console.error(props.error);
-  //   return (
-  //     <main id="main_content">
-  //       <p>{props.error.status}</p>
-  //       <p>{props.error.name}</p>
-  //       <p>{props.error.message}</p>
-  //       <p>{}</p>
-  //     </main>
-  //   );
-  // }
+  if (error) {
+    console.error(error);
+    return (
+      <main id="main_content">
+        <p>{error.status}</p>
+        <p>{error.name}</p>
+        <p>{error.message}</p>
+      </main>
+    );
+  }
 
   if (!data) {
     return (
@@ -41,7 +39,6 @@ export default function Home(props) {
       </main>
     );
   }
-
   // console.log(data);
 
   return (

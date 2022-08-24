@@ -1,13 +1,13 @@
 import Head from "next/head";
 import Layout from "../../components/layout/Layout";
 import commonStyles from "../../styles/Common.module.css";
-import getDatabase from "../../lib/database/get";
+import fetchDatabase from "../../lib/database/fetch";
 import useSWR from "swr";
 
 const styles = { ...commonStyles };
 
-export const getStaticProps = async (ctx) => {
-  const { data } = await getDatabase();
+export const getStaticProps = async () => {
+  const { data } = await fetchDatabase();
 
   return {
     props: {
@@ -18,8 +18,7 @@ export const getStaticProps = async (ctx) => {
 };
 
 export default function Movies(props) {
-  // const { data, error } = useSWR("/api/database/db.json", { fallbackData: props.data });
-  const data = props.data;
+  const { data, error } = useSWR("/api/fetch/database", { fallbackData: props.data });
   // console.log(data);
   return (
     <>

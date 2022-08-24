@@ -7,8 +7,8 @@ import Link from "next/link";
 import Loading from "../../components/Loading";
 import Trailer from "../../components/popups/Trailer";
 import commonStyles from "../../styles/Common.module.css";
-import fetchDetails from "../../lib/movie/fetch";
-import getDatabase from "../../lib/database/get";
+import fetchDatabase from "../../lib/database/fetch";
+import fetchDetails from "../../lib/movie_details/fetch";
 import pageStyles from "../../styles/MovieDetails.module.css";
 import useSWR from "swr";
 import { useState } from "react";
@@ -16,9 +16,7 @@ import { useState } from "react";
 const styles = { ...commonStyles, ...pageStyles };
 
 export const getStaticPaths = async () => {
-  const { data, error } = await getDatabase();
-
-  error && console.error(JSON.parse(error));
+  const { data } = await fetchDatabase();
 
   const movies = [];
   data.now_showing.map((i) => {
@@ -40,9 +38,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
   const { params } = context;
-  const { data, error } = await fetchDetails(params.movieID);
-
-  error && console.error(error);
+  const { data } = await fetchDetails(params.movieID);
 
   return {
     props: {
@@ -58,9 +54,12 @@ export default function MovieDetails(props) {
   const [modalHidden, setModalHidden] = useState(true);
 
   if (error) {
+    console.error(error);
     return (
       <main id="main_content">
-        <div>{error}</div>
+        <p>{error.status}</p>
+        <p>{error.name}</p>
+        <p>{error.message}</p>
       </main>
     );
   }

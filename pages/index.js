@@ -4,22 +4,27 @@ import Layout from "../components/layout/Layout";
 import Loading from "../components/Loading";
 import NowShowing from "../components/homepage/NowShowing";
 import fetchDatabase from "../lib/database/fetch";
+import { isStale } from "../lib/util/isStale";
 import styles from "../styles/Common.module.css";
 import useSWR from "swr";
 
 export const getStaticProps = async () => {
+  console.info("ISR building page: Home...");
   const { data } = await fetchDatabase();
+
+  const appData = JSON.parse(data);
 
   return {
     props: {
-      data,
+      data: appData,
     },
-    revalidate: 3600,
+    revalidate: 86400,
   };
 };
 
 export default function Home(props) {
-  const { data, error } = useSWR("/api/fetch/database", { fallbackData: props.data });
+  const stale = isStale(props.data.created);
+  const { data, error } = useSWR(!stale && "/api/fetch/database", { fallbackData: props.data });
 
   if (error) {
     console.error(error);
@@ -31,7 +36,6 @@ export default function Home(props) {
       </main>
     );
   }
-
   if (!data) {
     return (
       <main id="main_content">

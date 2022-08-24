@@ -9,6 +9,7 @@ import Trailer from "../../components/popups/Trailer";
 import commonStyles from "../../styles/Common.module.css";
 import fetchDatabase from "../../lib/database/fetch";
 import fetchDetails from "../../lib/movie_details/fetch";
+import { isStale } from "../../lib/util/isStale";
 import pageStyles from "../../styles/MovieDetails.module.css";
 import useSWR from "swr";
 import { useState } from "react";
@@ -19,10 +20,10 @@ export const getStaticPaths = async () => {
   const { data } = await fetchDatabase();
 
   const movies = [];
-  data.now_showing.map((i) => {
+  JSON.parse(data).now_showing.map((i) => {
     movies.push(i);
   });
-  data.coming_soon.map((i) => {
+  JSON.parse(data).coming_soon.map((i) => {
     movies.push(i);
   });
 
@@ -38,18 +39,24 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
   const { params } = context;
+  console.info(`ISR building page: movie_${params.movieID}...`);
   const { data } = await fetchDetails(params.movieID);
+
+  const appData = JSON.parse(data);
 
   return {
     props: {
-      data,
+      data: appData,
     },
     revalidate: 86400,
   };
 };
 
 export default function MovieDetails(props) {
-  const { data, error } = useSWR(`/api/fetch/movie_details?movie_id=${props.data.tmdb_id}`, { fallbackData: props.data });
+  const stale = isStale(props.data.created);
+  const { data, error } = useSWR(!stale && `/api/fetch/movie_details?movie_id=${props.data.tmdb_id}`, {
+    fallbackData: props.data,
+  });
   const [modalOpen, setModalOpen] = useState(false);
   const [modalHidden, setModalHidden] = useState(true);
 

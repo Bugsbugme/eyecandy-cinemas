@@ -2,23 +2,28 @@ import Head from "next/head";
 import Layout from "../../components/layout/Layout";
 import commonStyles from "../../styles/Common.module.css";
 import fetchDatabase from "../../lib/database/fetch";
+import { isStale } from "../../lib/util/isStale";
 import useSWR from "swr";
 
 const styles = { ...commonStyles };
 
 export const getStaticProps = async () => {
+  console.info("ISR building page: Movies...");
   const { data } = await fetchDatabase();
+
+  const appData = JSON.parse(data);
 
   return {
     props: {
-      data,
+      data: appData,
     },
     revalidate: 86400,
   };
 };
 
 export default function Movies(props) {
-  const { data, error } = useSWR("/api/fetch/database", { fallbackData: props.data });
+  const stale = isStale(props.data.created);
+  const { data, error } = useSWR(!stale && "/api/fetch/database", { fallbackData: props.data });
   // console.log(data);
   return (
     <>

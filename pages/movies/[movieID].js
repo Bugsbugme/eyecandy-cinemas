@@ -114,16 +114,19 @@ export default function MovieDetails(props) {
       )}
       <main id="main_content">
         <div className={styles.backdrop_container}>
-          <Image
-            className={styles.backdrop}
-            src={`https://image.tmdb.org/t/p/original${data.backdrop}`}
-            width={3840}
-            height={2160}
-            sizes="100vw"
-            quality={90}
-            priority
-            alt="Movie Backdrop"
-          />
+          <div className={styles.backdrop}>
+            <Image
+              className={styles.backdrop_image}
+              src={`https://image.tmdb.org/t/p/original${data.backdrop}`}
+              width={3840}
+              height={2160}
+              sizes="100vw"
+              quality={90}
+              priority
+              alt="Movie Backdrop"
+            />
+            <div className={styles.backdrop_overlay} />
+          </div>
         </div>
         <article className={[commonStyles.content, styles.details_container, styles.flex_container].join(" ")}>
           <Image

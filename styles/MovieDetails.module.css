@@ -17,8 +17,7 @@
 .backdrop_image {
   display: block;
   width: auto;
-  max-height: 100%;
-  min-height: 527px;
+  height: 100%;
   object-fit: contain;
 }
 
@@ -26,8 +25,7 @@
   display: block;
   position: absolute;
   width: auto;
-  max-height: 100%;
-  min-height: 541px;
+  height: 100%;
   aspect-ratio: 16/9;
   background: linear-gradient(90deg, var(--color-bg), transparent);
 }

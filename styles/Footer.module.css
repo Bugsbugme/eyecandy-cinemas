@@ -1,0 +1,56 @@
+.container {
+  bottom: 0;
+  z-index: 999;
+  justify-content: space-between;
+  padding: 0.3rem;
+  background-color: var(--color-fg);
+  border-color: var(--color-primary);
+  border-style: solid;
+  border-width: 1px 0 0 0;
+}
+
+.container ul {
+  align-items: center;
+  list-style: none;
+}
+
+.container p {
+  text-transform: uppercase;
+}
+
+.ecc_link {
+  margin-right: 0.4rem;
+}
+
+.ecc_link a {
+  display: inline;
+}
+
+.contact_link {
+  margin-left: 0.5rem;
+}
+
+.contact_link::before {
+  left: -0.5rem;
+}
+
+.follow_us {
+  margin-right: 1rem;
+}
+
+.follow_us::after {
+  right: -0.5rem;
+}
+
+.socials li {
+  display: block;
+  margin-left: 0.5rem;
+}
+
+.socials li i {
+  font-size: 1rem;
+}
+
+.socials .fb_link {
+  margin-left: 0;
+}

@@ -260,8 +260,6 @@ export default function MovieDetails(props) {
                   ].join(" ")}>
                   <Link href="#">
                     <a title="Share to Instagram">
-                      {/* <BsInstagram className={[styles.icon, styles.bg_gradient_linear_45].join(" ")} /> */}
-
                       <i className={["bi bi-instagram", styles.bg_gradient_linear_45].join(" ")} title="Share to Instagram" />
                     </a>
                   </Link>

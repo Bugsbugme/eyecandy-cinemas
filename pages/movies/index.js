@@ -9,7 +9,16 @@ const styles = { ...commonStyles };
 
 export const getStaticProps = async () => {
   console.info("ISR building page: Movies...");
-  const { data } = await fetchDatabase();
+  const { data, error } = await fetchDatabase();
+
+  if (error) {
+    const appError = JSON.parse(error);
+    const err = new Error("An error has occured while fetching data.");
+    err.status = appError.Status;
+    err.name = "Fetch Error";
+    err.info = appError;
+    throw err;
+  }
 
   const appData = JSON.parse(data);
 
@@ -17,13 +26,14 @@ export const getStaticProps = async () => {
     props: {
       data: appData,
     },
-    revalidate: 86400,
+    revalidate: 1800,
   };
 };
 
 export default function Movies(props) {
-  const stale = isStale(props.data.created);
-  const { data, error } = useSWR(!stale && "/api/fetch/database", { fallbackData: props.data });
+  // const stale = isStale(props.data.created);
+  // stale ? console.info("SWR: data not stale") : console.info("SWR: data is not stale");
+  // const { data, error } = useSWR(isStale(props.data.created) && "/api/fetch/database", { fallbackData: props.data });
   // console.log(data);
   return (
     <>

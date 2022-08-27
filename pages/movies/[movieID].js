@@ -17,7 +17,16 @@ import { useState } from "react";
 const styles = { ...commonStyles, ...pageStyles };
 
 export const getStaticPaths = async () => {
-  const { data } = await fetchDatabase();
+  const { data, error } = await fetchDatabase();
+
+  if (error) {
+    const appError = JSON.parse(error);
+    const err = new Error("An error has occured while fetching data.");
+    err.status = appError.Status;
+    err.name = "Fetch Error";
+    err.info = appError;
+    throw err;
+  }
 
   const movies = [];
   JSON.parse(data).now_showing.map((i) => {
@@ -40,7 +49,16 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   const { params } = context;
   console.info(`ISR building page: movie_${params.movieID}...`);
-  const { data } = await fetchDetails(params.movieID);
+  const { data, error } = await fetchDetails(params.movieID);
+
+  if (error) {
+    const appError = JSON.parse(error);
+    const err = new Error("An error has occured while fetching data.");
+    err.status = appError.Status;
+    err.name = "Fetch Error";
+    err.info = appError;
+    throw err;
+  }
 
   const appData = JSON.parse(data);
 
@@ -48,35 +66,37 @@ export const getStaticProps = async (context) => {
     props: {
       data: appData,
     },
-    revalidate: 86400,
+    revalidate: 1800,
   };
 };
 
 export default function MovieDetails(props) {
-  const stale = isStale(props.data.created);
-  const { data, error } = useSWR(!stale && `/api/fetch/movie_details?movie_id=${props.data.tmdb_id}`, {
-    fallbackData: props.data,
-  });
+  // const stale = isStale(props.data.created);
+  // stale ? console.info("SWR: data not stale") : console.info("SWR: data is not stale");
+  // const { data, error } = useSWR(isStale(props.data.created) && `/api/fetch/movie_details?movie_id=${props.data.tmdb_id}`, {
+  //   fallbackData: props.data,
+  // });
   const [modalOpen, setModalOpen] = useState(false);
   const [modalHidden, setModalHidden] = useState(true);
 
-  if (error) {
-    console.error(error);
-    return (
-      <main id="main_content">
-        <p>{error.status}</p>
-        <p>{error.name}</p>
-        <p>{error.message}</p>
-      </main>
-    );
-  }
-  if (!data) {
-    return (
-      <main id="main_content">
-        <Loading />
-      </main>
-    );
-  }
+  // if (error) {
+  //   console.error(error);
+  //   return (
+  //     <main id="main_content">
+  //       <p>{error.status}</p>
+  //       <p>{error.name}</p>
+  //       <p>{error.message}</p>
+  //     </main>
+  //   );
+  // }
+  // if (!data) {
+  //   return (
+  //     <main id="main_content">
+  //       <Loading />
+  //     </main>
+  //   );
+  // }
+  const data = props.data;
 
   const title = `EyeCandy Cinemas: ${data.title}`;
 

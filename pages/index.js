@@ -1,3 +1,5 @@
+import useSWR, { useSWRConfig } from "swr";
+
 import ComingSoon from "../components/homepage/ComingSoon";
 import Head from "next/head";
 import Layout from "../components/layout/Layout";
@@ -6,11 +8,19 @@ import NowShowing from "../components/homepage/NowShowing";
 import fetchDatabase from "../lib/database/fetch";
 import { isStale } from "../lib/util/isStale";
 import styles from "../styles/Common.module.css";
-import useSWR from "swr";
 
 export const getStaticProps = async () => {
   console.info("ISR building page: Home...");
-  const { data } = await fetchDatabase();
+  const { data, error } = await fetchDatabase();
+
+  if (error) {
+    const appError = JSON.parse(error);
+    const err = new Error("An error has occured while fetching data.");
+    err.status = appError.Status;
+    err.name = "Fetch Error";
+    err.info = appError;
+    throw err;
+  }
 
   const appData = JSON.parse(data);
 
@@ -18,32 +28,40 @@ export const getStaticProps = async () => {
     props: {
       data: appData,
     },
-    revalidate: 86400,
+    revalidate: 1800,
   };
 };
 
 export default function Home(props) {
-  const stale = isStale(props.data.created);
-  const { data, error } = useSWR(!stale && "/api/fetch/database", { fallbackData: props.data });
+  // const stale = isStale(props.data.created);
+  // stale ? console.info("SWR: data not stale") : console.info("SWR: data is not stale");
+  // const { cache } = useSWRConfig();
+  // console.log(...cache);
+  // const { data, error } = useSWR(`/api/fetch/database`, {
+  //   fallbackData: props.data,
+  // });
 
-  if (error) {
-    console.error(error);
-    return (
-      <main id="main_content">
-        <p>{error.status}</p>
-        <p>{error.name}</p>
-        <p>{error.message}</p>
-      </main>
-    );
-  }
-  if (!data) {
-    return (
-      <main id="main_content">
-        <Loading />
-      </main>
-    );
-  }
   // console.log(data);
+
+  // if (error) {
+  //   console.error(error);
+  //   return (
+  //     <main id="main_content">
+  //       <p>{error.status}</p>
+  //       <p>{error.name}</p>
+  //       <p>{error.message}</p>
+  //     </main>
+  //   );
+  // }
+  // if (!data) {
+  //   return (
+  //     <main id="main_content">
+  //       <Loading />
+  //     </main>
+  //   );
+  // }
+  // console.log(data);
+  const data = props.data;
 
   return (
     <>

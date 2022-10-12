@@ -1,0 +1,12 @@
+.container {
+  /* display: flex; */
+  width: auto;
+  height: auto;
+  align-items: center;
+}
+
+.movie_list {
+  flex-wrap: wrap;
+  align-self: center;
+  justify-content: flex-start;
+}

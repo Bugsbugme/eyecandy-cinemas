@@ -10,6 +10,8 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <SWRConfig
       value={{
+        revalidateOnMount: true,
+        revalidateOnFocus: false,
         fetcher: async (...args) => {
           const response = await fetch(...args);
           const data = await response.json();

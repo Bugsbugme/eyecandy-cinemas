@@ -22,7 +22,7 @@ export default function Carousel({ movieList, movieType }) {
                   id: movie.id,
                   movieType: movieType,
                   title: movie.title,
-                  relaese_date: movie.release_date,
+                  release_date: movie.release_date,
                   poster_path: movie.poster_path,
                 }}
               />

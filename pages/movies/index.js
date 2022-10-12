@@ -1,14 +1,17 @@
+import { useEffect, useState } from "react";
+
 import Head from "next/head";
 import Layout from "../../components/layout/Layout";
+import MovieCard from "../../components/moviespage/MovieCard";
 import commonStyles from "../../styles/Common.module.css";
 import fetchDatabase from "../../lib/database/fetch";
-import { isStale } from "../../lib/util/isStale";
-import useSWR from "swr";
+import isStale from "../../lib/util/StaleDataCheck";
+import moduleStyles from "../../styles/Movies.module.css";
 
-const styles = { ...commonStyles };
+const styles = { ...commonStyles, ...moduleStyles };
 
 export const getStaticProps = async () => {
-  console.info("ISR building page: Movies...");
+  console.info("ISR: Building page - Home...");
   const { data, error } = await fetchDatabase();
 
   if (error) {
@@ -20,21 +23,28 @@ export const getStaticProps = async () => {
     throw err;
   }
 
-  const appData = JSON.parse(data);
-
   return {
     props: {
-      data: appData,
+      data: JSON.parse(data),
     },
-    revalidate: 1800,
   };
 };
 
 export default function Movies(props) {
-  // const stale = isStale(props.data.created);
-  // stale ? console.info("SWR: data not stale") : console.info("SWR: data is not stale");
-  // const { data, error } = useSWR(isStale(props.data.created) && "/api/fetch/database", { fallbackData: props.data });
-  // console.log(data);
+  const revalToken = process.env.NEXT_PUBLIC_REVAL_TOKEN;
+  const dataDate = props.data.created;
+  const [data, setData] = useState(props.data);
+
+  useEffect(() => {
+    if (isStale(new Date(dataDate), 1800)) {
+      fetch(`/api/revalidate?reval_token=${revalToken}&fetch=db&path=/movies`)
+        .then((res) => res.json())
+        .then((data) => setData(data.fresh_data));
+    }
+  }, [dataDate, revalToken]);
+
+  const movieList = [...data.now_showing, ...data.coming_soon];
+
   return (
     <>
       <Head>
@@ -42,10 +52,22 @@ export default function Movies(props) {
         <meta property="og:title" content="EyeCandy Cinemas: Movies" key="title" />
       </Head>
       <main id="main_content">
-        <div className={[styles.content, styles.flex_container, styles.flex_column].join(" ")}>
-          <h2>Movies</h2>
-          <h3>(Under Construction)</h3>
-        </div>
+        <section className={[styles.content, styles.flex_container].join(" ")}>
+          <div className={[styles.movie_list, styles.flex_container].join(" ")}>
+            {movieList.map((movie, index) => (
+              <MovieCard
+                key={index}
+                movie={{
+                  id: movie.id,
+                  released: movie.released,
+                  title: movie.title,
+                  release_date: movie.release_date,
+                  poster_path: movie.poster_path,
+                }}
+              />
+            ))}
+          </div>
+        </section>
       </main>
     </>
   );

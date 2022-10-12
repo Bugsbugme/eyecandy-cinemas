@@ -1,18 +1,16 @@
 import { format, parseISO } from "date-fns";
+import { useEffect, useState } from "react";
 
 import Head from "next/head";
 import Image from "next/future/image";
 import Layout from "../../components/layout/Layout";
 import Link from "next/link";
-import Loading from "../../components/Loading";
 import Trailer from "../../components/popups/Trailer";
 import commonStyles from "../../styles/Common.module.css";
 import fetchDatabase from "../../lib/database/fetch";
 import fetchDetails from "../../lib/movie_details/fetch";
-import { isStale } from "../../lib/util/isStale";
+import isStale from "../../lib/util/StaleDataCheck";
 import pageStyles from "../../styles/MovieDetails.module.css";
-import useSWR from "swr";
-import { useState } from "react";
 
 const styles = { ...commonStyles, ...pageStyles };
 
@@ -37,7 +35,7 @@ export const getStaticPaths = async () => {
   });
 
   const paths = movies.map((movie) => ({
-    params: { movieID: movie.id.toString() },
+    params: { movieID: JSON.stringify(movie.id) },
   }));
 
   return {
@@ -48,7 +46,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
   const { params } = context;
-  console.info(`ISR building page: movie_${params.movieID}...`);
+  console.info(`ISR: Building page - movies/${params.movieID}...`);
   const { data, error } = await fetchDetails(params.movieID);
 
   if (error) {
@@ -60,43 +58,28 @@ export const getStaticProps = async (context) => {
     throw err;
   }
 
-  const appData = JSON.parse(data);
-
   return {
     props: {
-      data: appData,
+      data: JSON.parse(data),
     },
-    revalidate: 1800,
   };
 };
 
 export default function MovieDetails(props) {
-  // const stale = isStale(props.data.created);
-  // stale ? console.info("SWR: data not stale") : console.info("SWR: data is not stale");
-  // const { data, error } = useSWR(isStale(props.data.created) && `/api/fetch/movie_details?movie_id=${props.data.tmdb_id}`, {
-  //   fallbackData: props.data,
-  // });
+  const revalToken = process.env.NEXT_PUBLIC_REVAL_TOKEN;
+  const dataDate = props.data.created;
+  const [data, setData] = useState(props.data);
+
+  useEffect(() => {
+    if (isStale(new Date(dataDate), 1800)) {
+      fetch(`/api/revalidate?reval_token=${revalToken}&fetch=movie&path=/movies/${props.data.tmdb_id}`)
+        .then((res) => res.json())
+        .then((data) => setData(data.fresh_data));
+    }
+  }, [dataDate, revalToken, props.data.tmdb_id]);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modalHidden, setModalHidden] = useState(true);
-
-  // if (error) {
-  //   console.error(error);
-  //   return (
-  //     <main id="main_content">
-  //       <p>{error.status}</p>
-  //       <p>{error.name}</p>
-  //       <p>{error.message}</p>
-  //     </main>
-  //   );
-  // }
-  // if (!data) {
-  //   return (
-  //     <main id="main_content">
-  //       <Loading />
-  //     </main>
-  //   );
-  // }
-  const data = props.data;
 
   const title = `EyeCandy Cinemas: ${data.title}`;
 
@@ -130,7 +113,8 @@ export default function MovieDetails(props) {
             setTimeout(() => {
               setModalOpen(false);
             }, 300);
-          }}></Trailer>
+          }}
+        />
       )}
       <main id="main_content">
         <div className={styles.backdrop_container}>
